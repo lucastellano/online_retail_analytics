@@ -1,39 +1,32 @@
 # Online Retail Analytics
 
-Análisis exploratorio y segmentación de clientes sobre un dataset de transacciones de una tienda de retail online del Reino Unido (2009–2011).
+Exploratory analysis and customer segmentation on a transactional dataset from a UK-based online retailer (2009–2011).
 
----
+## Objective
 
-## Objetivo
-
-Responder preguntas clave de negocio a partir de datos transaccionales:
-
-- ¿Cómo evolucionó el revenue a lo largo del tiempo?
-- ¿Qué productos y mercados generan más valor?
-- ¿Cómo se pueden segmentar los clientes según su comportamiento de compra?
-
----
+Answer key business questions from transactional data:
+- How did revenue evolve over time?
+- Which products and markets generate the most value?
+- How can customers be segmented based on purchasing behavior?
 
 ## Dataset
 
-**Fuente:** [Online Retail II — UCI Machine Learning Repository](https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci) via Kaggle
+**Source:** Online Retail II — UCI Machine Learning Repository via Kaggle
 
-**Descripción:** Dataset de transacciones reales de una tienda de retail online del Reino Unido entre diciembre de 2009 y diciembre de 2011. Incluye ventas a clientes minoristas y mayoristas, principalmente en Europa.
+**Description:** Real transactional data from a UK-based online retailer between December 2009 and December 2011. Includes sales to both retail and wholesale customers, mainly across Europe.
 
-| Columna | Descripción |
+| Column | Description |
 |---|---|
-| Invoice | Número de factura (prefijo 'C' indica cancelación) |
-| StockCode | Código de producto |
-| Description | Nombre del producto |
-| Quantity | Cantidad por transacción (negativo = devolución) |
-| InvoiceDate | Fecha y hora de la transacción |
-| Price | Precio unitario en libras esterlinas (£) |
-| Customer ID | Identificador único del cliente |
-| Country | País del cliente |
+| Invoice | Invoice number (prefix 'C' indicates cancellation) |
+| StockCode | Product code |
+| Description | Product name |
+| Quantity | Quantity per transaction (negative = return) |
+| InvoiceDate | Transaction date and time |
+| Price | Unit price in British pounds (£) |
+| Customer ID | Unique customer identifier |
+| Country | Customer country |
 
----
-
-## Tecnologías utilizadas
+## Technologies
 
 - Python 3
 - pandas
@@ -42,68 +35,60 @@ Responder preguntas clave de negocio a partir de datos transaccionales:
 - seaborn
 - Google Colab
 
----
+## Project Structure
 
-## Estructura del proyecto
+The analysis is organized in a single notebook with the following stages:
 
-El análisis está organizado en un único notebook con las siguientes etapas:
+**1. Data Loading & Initial Exploration**
+Loading the dataset, inspecting structure, data types, missing values, and descriptive statistics.
 
-**1. Carga y exploración inicial**
-Carga del dataset, inspección de estructura, tipos de datos, nulos y estadísticas descriptivas.
+**2. Data Cleaning**
+- Removal of cancellations (invoices with prefix 'C') and accounting adjustments (prefix 'A')
+- Removal of rows with negative or zero Quantity or Price
+- Conversion of InvoiceDate to datetime format
+- Creation of Revenue column (Quantity × Price)
+- Rows with null Customer ID are kept for general analysis and filtered only for RFM segmentation
 
-**2. Limpieza de datos**
-- Eliminación de cancelaciones (Invoice con prefijo 'C') y ajustes contables (prefijo 'A')
-- Eliminación de filas con Quantity o Price negativos o iguales a cero
-- Conversión de InvoiceDate a formato datetime
-- Creación de la columna Revenue (Quantity × Price)
-- Los nulos de Customer ID se conservan para el análisis general y se filtran únicamente para la segmentación RFM
+**3. Business Metrics Analysis**
+- Total revenue and monthly trend
+- Top 10 products by revenue
+- Top 10 countries by revenue (excluding the UK)
 
-**3. Análisis de métricas de negocio**
-- Revenue total y evolución mensual
-- Top 10 productos por revenue
-- Top 10 países por revenue (excluyendo Reino Unido)
+**4. Visualizations**
+- Monthly revenue trend line (2009–2011)
+- Bar chart: top 10 products by revenue
+- Bar chart: top 10 countries by revenue
 
-**4. Visualizaciones**
-- Línea de tendencia de revenue mensual (2009–2011)
-- Gráfico de barras: top 10 productos por revenue
-- Gráfico de barras: top 10 países por revenue
+**5. RFM Segmentation**
+Segmentation of 5,862 identified customers into five groups based on purchasing behavior: VIP, Loyal, New or Promising, At Risk, and Lost.
 
-**5. Segmentación RFM**
-Segmentación de 5.862 clientes identificados en cinco grupos según comportamiento de compra: VIP, Leal, Nuevo o prometedor, En riesgo y Perdido.
+## Key Findings
 
----
+- **Total revenue:** £20.9 million over two years
+- **Clear seasonality:** October, November, and December concentrate revenue peaks in both years, with November 2011 as the record month (£1.5M) — strong dependency on the holiday season
+- **Top product:** REGENCY CAKESTAND 3 TIER generated £344,563 over the period, nearly double the second-ranked product
+- **Concentrated market:** The UK dominates sales. Among international markets, Ireland (EIRE) and the Netherlands lead with £640K and £550K respectively
+- **Customer segmentation:**
 
-## Principales hallazgos
-
-- **Revenue total:** £20,9 millones en dos años de operación
-- **Estacionalidad marcada:** octubre, noviembre y diciembre concentran los picos de revenue en ambos años, con noviembre 2011 como mes récord (£1,5M). Esto sugiere una fuerte dependencia de la temporada navideña
-- **Producto estrella:** REGENCY CAKESTAND 3 TIER generó £344.563 en el período, casi el doble que el segundo producto
-- **Mercado concentrado:** Reino Unido domina las ventas. Entre los mercados internacionales, Irlanda (EIRE) y Netherlands lideran con £640k y £550k respectivamente
-- **Segmentación de clientes:**
-
-| Segmento | Clientes | % |
+| Segment | Customers | % |
 |---|---|---|
-| Perdido | 2.043 | 35% |
-| Leal | 1.381 | 24% |
-| En riesgo | 888 | 15% |
-| Nuevo o prometedor | 888 | 15% |
+| Lost | 2,043 | 35% |
+| Loyal | 1,381 | 24% |
+| At Risk | 888 | 15% |
+| New or Promising | 888 | 15% |
 | VIP | 662 | 11% |
 
-El segmento "En riesgo" representa una oportunidad de retención inmediata: son clientes con alta frecuencia histórica que dejaron de comprar recientemente.
+The "At Risk" segment represents an immediate retention opportunity: customers with high historical frequency who recently stopped purchasing.
 
----
+## How to Reproduce
 
-## Cómo reproducir el análisis
+1. Clone the repository
+2. Download the dataset from Kaggle and place it in the root folder
+3. Open the notebook in Google Colab or Jupyter
+4. Run the cells in order
 
-1. Clonar el repositorio
-2. Descargar el dataset desde [Kaggle](https://www.kaggle.com/datasets/mashlyn/online-retail-ii-uci) y colocarlo en la carpeta raíz
-3. Abrir el notebook en Google Colab o Jupyter
-4. Ejecutar las celdas en orden
+## Analytical Decisions
 
----
-
-## Decisiones analíticas
-
-- **Exclusión de UK en el análisis por país:** Reino Unido concentra más del 90% de las transacciones. Se excluye para permitir visualizar la distribución entre mercados internacionales.
-- **Criterios de segmentación RFM:** los segmentos se definen a partir de los puntajes R (Recency) y F (Frequency) como dimensiones principales. M (Monetary) se incorpora únicamente para la clasificación VIP, donde el valor económico es un criterio diferenciador clave.
-- **Customer ID nulos:** representan el 23% del dataset (compras anónimas). Se conservan para el análisis de revenue y productos, y se excluyen únicamente para la segmentación RFM donde la identificación del cliente es necesaria.
+- **Exclusion of UK in country analysis:** The UK accounts for over 90% of transactions. It is excluded to better visualize the distribution across international markets.
+- **RFM segmentation criteria:** Segments are defined primarily using R (Recency) and F (Frequency) scores. M (Monetary) is incorporated only for the VIP classification, where economic value is a key differentiator.
+- **Null Customer IDs:** Represent 23% of the dataset (anonymous purchases). Kept for revenue and product analysis, excluded only for RFM segmentation where customer identification is required.
